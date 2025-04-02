@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zelda Hearts Overlay</title>
+  <style>
+    body {
+      margin: 0;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: sans-serif;
+    }
+    .hearts {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 16px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      justify-content: center;
+    }
+    button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 8px;
+      background: #333;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #555;
+    }
+    .heart {
+      width: 32px;
+      height: 32px;
+    }
+  </style>
+</head>
+<body>
+  <div style="text-align: center;">
+    <div class="hearts" id="heartContainer"></div>
+    <div class="controls">
+      <button onclick="changeHealth(2)">+ Full Heart</button>
+      <button onclick="changeHealth(-2)">- Full Heart</button>
+    </div>
+  </div>
+
+  <script>
+    const TOTAL_HEARTS = 10;
+    let health = TOTAL_HEARTS * 2;
+
+    const heartContainer = document.getElementById("heartContainer");
+
+    const fullHeart = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAV1BMVEUAAAD///////////////////////////////////////////////////////+vr6+fn5+/v7+zs7O3t7e/v7+fn5+fn5+np6ejo6Ozs7Ozs7O/v7+vr6+fn5+jo6O3t7e/v7+3t7ejo6P8KwKqfAAAAH3RSTlMAAQIDBAgJCgsPEBESExQXFyEiJCYvMjY5QktMZnx+gsS8vL3EytJzAAAAyElEQVQ4y+3SSxLDIAwE0Cq3ap27bLf//y12QghCRzvS+HZkAwFRAgjjJKkkLoX64RyF9LSQIn8I2h7joHHwnAf8aEvLkZymwjDJ8I+oqMiWYMyPtGRFNk3UZkkhprCSZhAYAm0lP8APTRmCtUohVxtOc0+jE+YI2pK1NYRyMk4RrVqE1K0ykpG43F3RYG0EM2ZEu1wZYXLztE/2FSLf5KqF6ozPOfOfOGT9/XEbf+wMAAAAAElFTkSuQmCC";
+    const halfHeart = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAV1BMVEUAAAD///////////////////////////////////////////////+vr6+fn5+fn5+fn5+vr6+vr6+jo6Ozs7O/v7+fn5+jo6Ozs7O3t7e/v7+3t7ejo6Ovr6+fn5+vr6/jKLU3AAAAH3RSTlMAAQIDBAgJCgsPEBESExQXFyEiJCYvMjY5QktMZnx+gsS8vL3EytJzAAAAxUlEQVQ4y+3SSxKDIAwE0Dq3ap27bLf//z+NEQKp3XKwP0zBASjoT7nJEnmS7C/VoW+Vj2Wh6c6mDW6DxFNHq4/4INjUkCyEzi5i5z2EaWQKo7BvFOAvGQzYQZUwqxMlYQkgaCtAixYwZ9vBdO+FREk9IKQSKfWqR5cJmiT0z6AoXAj3RmNUH1GhcNNQHbw9TJXsWpvNxWZCpbAqcfzvnPmMGXN9gc8W+AZ1rcLR3FbAAAAABJRU5ErkJggg==";
+    const emptyHeart = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAVFBMVEUAAAD///////////////////////////////+vr6+fn5+vr6+fn5+vr6+vr6+fn5+jo6Ozs7O/v7+fn5+jo6Ozs7O3t7e/v7+3t7ejo6Ovr6+fn5+vr6+fn5+fn5+fBv0YmAAAAHXRSTlMAAQIDBAgJCgsPEBESExQXFyEiJCYvMjY5QktMZnx+gsS8vL3EytJzAAAAyUlEQVQ4y+3SSxLDIAwE0Cq3ap27bLf//y12QghCRzvS+HZkAwFRAgjjJKkkLoX64RyF9LSQIn8I2h7joHHwnAf8aEvLkZymwjDJ8I+oqMiWYMyPtGRFNk3UZkkhprCSZhAYAm0lP8APTRmCtUohVxtOc0+jE+YI2pK1NYRyMk4RrVqE1K0ykpG43F3RYG0EM2ZEu1wZYXLztE/2FSLf5KqF6ozPOfOfOGT9/XEbf+wMAAAAAElFTkSuQmCC";
+
+    function renderHearts() {
+      heartContainer.innerHTML = "";
+      for (let i = 0; i < TOTAL_HEARTS; i++) {
+        const heartValue = health - i * 2;
+        const img = document.createElement("img");
+        img.className = "heart";
+        if (heartValue >= 2) {
+          img.src = fullHeart;
+        } else if (heartValue === 1) {
+          img.src = halfHeart;
+        } else {
+          img.src = emptyHeart;
+        }
+        heartContainer.appendChild(img);
+      }
+    }
+
+    function changeHealth(amount) {
+      health = Math.max(0, Math.min(health + amount, TOTAL_HEARTS * 2));
+      renderHearts();
+    }
+
+    renderHearts();
+  </script>
+</body>
+</html>
